@@ -97,6 +97,10 @@
   font-weight: bold;
 }
 
+.content-space {
+  margin-left: 10px;
+  margin-right: 10px;
+}
 /* .bm-overlay {
   background: rgba(0, 0, 0, 0.3);
 } */

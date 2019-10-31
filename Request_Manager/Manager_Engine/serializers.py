@@ -9,6 +9,7 @@ class RequestSerializer(serializers.ModelSerializer):
             'id',
             'store',
             'name',
+            'phone',
             'type',
             'category',
             'subcategory',
@@ -21,7 +22,6 @@ class RequestSerializer(serializers.ModelSerializer):
             'date',
             'status',
             'requested_by',
-            'notes',
             'purchase_order')
 
 

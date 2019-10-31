@@ -7,6 +7,7 @@ class Request(models.Model):
     id = models.AutoField(primary_key=True)
     store = models.CharField(max_length=32)
     name = models.CharField(max_length=64, default="null")
+    phone = models.CharField(max_length=16, default="000-000-0000")
     type = models.CharField(max_length=64)
     category = models.CharField(max_length=64)
     subcategory = models.CharField(max_length=64, default="none")

@@ -46,86 +46,90 @@ export default class CustomModal extends Component {
       <Modal isOpen={true} toggle={toggle}>
         <ModalHeader toggle={toggle}>Request</ModalHeader>
         <modalBody>
-          <Form>
+          <form>
             <div className="form-row">
-              <div className="col" align="center">
-                <FormGroup>
-                  <select
-                    value={this.state.activeItem.status}
-                    name="status"
-                    onChange={this.handleChange}
-                  >
-                    <option value="" disabled selected>
-                      STATUS
-                    </option>
-                    <option value="open">Open</option>
-                    <option value="ordered">Ordered</option>
-                    <option value="received">Received</option>
-                    <option value="done">Done</option>
-                    <option value="rejected">Rejected</option>
-                    <option value="bo">BO</option>
-                    <option value="archived">Archived</option>
-                  </select>
-                </FormGroup>
+              <div class="form-group col-md-3">
+                <select
+                  value={this.state.activeItem.status}
+                  name="status"
+                  onChange={this.handleChange}
+                >
+                  <option value="" disabled selected>
+                    STATUS
+                  </option>
+                  <option value="open">Open</option>
+                  <option value="ordered">Ordered</option>
+                  <option value="received">Received</option>
+                  <option value="done">Done</option>
+                  <option value="rejected">Rejected</option>
+                  <option value="bo">BO</option>
+                  <option value="archived">Archived</option>
+                </select>
               </div>
-              <div className="col" align="center">
-                <FormGroup>
-                  <select
-                    value={this.state.activeItem.store}
-                    name="store"
-                    onChange={this.handleChange}
-                  >
-                    <option value="" disabled selected>
-                      STORE LOCATION
-                    </option>
-                    <option value="college">College</option>
-                    <option value="solano">Solano</option>
-                  </select>
-                </FormGroup>
+              <div className="form-group col-md-3">
+                <select
+                  value={this.state.activeItem.store}
+                  name="store"
+                  onChange={this.handleChange}
+                >
+                  <option value="" disabled selected>
+                    STORE LOCATION
+                  </option>
+                  <option value="college">College</option>
+                  <option value="solano">Solano</option>
+                </select>
               </div>
-              <div className="col" align="center">
-                <FormGroup>
-                  <select
-                    value={this.state.activeItem.type}
-                    name="type"
-                    onChange={this.handleChange}
-                  >
-                    <option value="" disabled selected>
-                      TYPE
-                    </option>
-                    <option value="Order">Order</option>
-                    <option value="Transfer">Transfer</option>
-                  </select>
-                </FormGroup>
+              <div className="form-group col-md-3">
+                <select
+                  value={this.state.activeItem.type}
+                  name="type"
+                  onChange={this.handleChange}
+                >
+                  <option value="" disabled selected>
+                    TYPE
+                  </option>
+                  <option value="Order">Order</option>
+                  <option value="Transfer">Transfer</option>
+                </select>
               </div>
-              <div className="col" align="center">
-                <FormGroup>
-                  <select
-                    value={this.state.activeItem.category}
-                    name="category"
-                    onChange={this.handleChange}
-                  >
-                    <option value="" disabled selected>
-                      CATEGORY
-                    </option>
-                    <option value="Footwear">Footwear</option>
-                    <option value="Non-Footwear">Non-Footwear</option>
-                  </select>
-                </FormGroup>
+              <div className="form-group col-md-3">
+                <select
+                  value={this.state.activeItem.category}
+                  name="category"
+                  onChange={this.handleChange}
+                >
+                  <option value="" disabled selected>
+                    CATEGORY
+                  </option>
+                  <option value="Footwear">Footwear</option>
+                  <option value="Non-Footwear">Non-Footwear</option>
+                </select>
               </div>
             </div>
-            <FormGroup>
-              <Label for="name">Name</Label>
-              <Input
-                type="text"
-                name="name"
-                value={this.state.activeItem.name}
-                onChange={this.handleChange}
-                placeholder="Enter Name"
-              />
-            </FormGroup>
             <div className="form-row">
-              <FormGroup className="m-3">
+              <div className="form-group col-md-6">
+                <Label for="name">Name</Label>
+                <Input
+                  type="text"
+                  name="name"
+                  value={this.state.activeItem.name}
+                  onChange={this.handleChange}
+                  placeholder="Enter Name"
+                />
+              </div>
+              <div className="form-group col-md-6">
+                <Label for="name">Phone</Label>
+                <Input
+                  type="text"
+                  name="phone"
+                  value={this.state.activeItem.phone}
+                  onChange={this.handleChange}
+                  placeholder="Enter Phone"
+                />
+              </div>
+            </div>
+            <div className="form-row">
+              <div className="form-group col-md-6">
                 <Label for="vendor">Vendor</Label>
                 <Input
                   type="text"
@@ -134,8 +138,8 @@ export default class CustomModal extends Component {
                   onChange={this.handleChange}
                   placeholder="Enter Vendor"
                 />
-              </FormGroup>
-              <FormGroup className="m-3">
+              </div>
+              <div className="form-group col-md-6">
                 <Label for="model">Model</Label>
                 <Input
                   type="text"
@@ -144,48 +148,42 @@ export default class CustomModal extends Component {
                   onChange={this.handleChange}
                   placeholder="Enter Model"
                 />
-              </FormGroup>
+              </div>
             </div>
             <div class="form-row">
-              <div class="col">
-                <FormGroup className="m-3">
-                  <Label for="name">Size</Label>
-                  <Input
-                    type="text"
-                    name="size"
-                    value={this.state.activeItem.size}
-                    onChange={this.handleChange}
-                    placeholder="Enter Size"
-                  />
-                </FormGroup>
+              <div className="form-group col-md-4">
+                <Label for="name">Size</Label>
+                <Input
+                  type="text"
+                  name="size"
+                  value={this.state.activeItem.size}
+                  onChange={this.handleChange}
+                  placeholder="Enter Size"
+                />
               </div>
-              <div class="col">
-                <FormGroup className="m-3">
-                  <Label for="name">Color</Label>
-                  <Input
-                    type="text"
-                    name="color"
-                    value={this.state.activeItem.color}
-                    onChange={this.handleChange}
-                    placeholder="Enter Color"
-                  />
-                </FormGroup>
+              <div className="form-group col-md-4">
+                <Label for="name">Color</Label>
+                <Input
+                  type="text"
+                  name="color"
+                  value={this.state.activeItem.color}
+                  onChange={this.handleChange}
+                  placeholder="Enter Color"
+                />
               </div>
-              <div class="col">
-                <FormGroup className="m-3">
-                  <Label for="width">Width</Label>
-                  <Input
-                    type="text"
-                    name="width"
-                    value={this.state.activeItem.width}
-                    onChange={this.handleChange}
-                    placeholder="Enter Width"
-                  />
-                </FormGroup>
+              <div className="form-group col-md-4">
+                <Label for="width">Width</Label>
+                <Input
+                  type="text"
+                  name="width"
+                  value={this.state.activeItem.width}
+                  onChange={this.handleChange}
+                  placeholder="Enter Width"
+                />
               </div>
             </div>
             <div className="form-row">
-              <FormGroup className="m-3">
+              <div className="form-group col-md-4">
                 <Label for="itemNumber">Item Number</Label>
                 <Input
                   type="text"
@@ -194,8 +192,8 @@ export default class CustomModal extends Component {
                   onChange={this.handleChange}
                   placeholder="Enter Item Number"
                 />
-              </FormGroup>
-              <FormGroup className="m-3">
+              </div>
+              <div className="form-group col-md-4">
                 <Label for="requestedBy">Requested By</Label>
                 <Input
                   type="text"
@@ -204,9 +202,19 @@ export default class CustomModal extends Component {
                   onChange={this.handleChange}
                   placeholder="Enter Requested By"
                 />
-              </FormGroup>
+              </div>
             </div>
-          </Form>
+            <FormGroup>
+              <Label for="purchase_order">PO</Label>
+              <Input
+                type="text"
+                name="purchase_order"
+                value={this.state.activeItem.purchase_order}
+                onChange={this.handleChange}
+                placeholder="Enter PO"
+              />
+            </FormGroup>
+          </form>
           <Card border="warning">
             <Card.Header>
               Notes{" "}
