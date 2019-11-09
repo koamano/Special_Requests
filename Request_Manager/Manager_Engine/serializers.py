@@ -22,7 +22,10 @@ class RequestSerializer(serializers.ModelSerializer):
             'date',
             'status',
             'requested_by',
-            'purchase_order')
+            'purchase_order',)
+        # 'quantity',
+        # 'other_store_inventory',
+        # 'hold_until')
 
 
 class HistorySerializer(serializers.ModelSerializer):

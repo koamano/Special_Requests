@@ -29,7 +29,7 @@ export default class TopicPanel extends Component {
             <tr>
               <th>Date</th>
               <th>By</th>
-              <th>Notes</th>
+              <th>{this.props.descriptionHeader}</th>
             </tr>
           </thead>
           <tbody>{this.renderPanelData()}</tbody>

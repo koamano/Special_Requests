@@ -20,6 +20,7 @@ export default class CustomModal extends Component {
     this.state = {
       noteModal: this.props.noteModal,
       activeItem: this.props.activeItem,
+      prevItem: this.props.activeItem,
       noteItem: this.props.noteItem,
       showAddNoteForm: false
     };
@@ -40,6 +41,11 @@ export default class CustomModal extends Component {
     this.setState({ noteItem });
   };
 
+  handleSave = currentItem => {
+    const diff = this.props.findDiff(this.state.prevItem, currentItem);
+    this.props.onSave(currentItem, diff);
+  };
+
   render() {
     const { toggle, onSave, onSaveNote } = this.props;
     return (
@@ -48,7 +54,7 @@ export default class CustomModal extends Component {
         <modalBody>
           <form>
             <div className="form-row">
-              <div class="form-group col-md-3">
+              <div className="col">
                 <select
                   value={this.state.activeItem.status}
                   name="status"
@@ -66,7 +72,7 @@ export default class CustomModal extends Component {
                   <option value="archived">Archived</option>
                 </select>
               </div>
-              <div className="form-group col-md-3">
+              <div className="col">
                 <select
                   value={this.state.activeItem.store}
                   name="store"
@@ -79,7 +85,7 @@ export default class CustomModal extends Component {
                   <option value="solano">Solano</option>
                 </select>
               </div>
-              <div className="form-group col-md-3">
+              <div className="col">
                 <select
                   value={this.state.activeItem.type}
                   name="type"
@@ -92,7 +98,7 @@ export default class CustomModal extends Component {
                   <option value="Transfer">Transfer</option>
                 </select>
               </div>
-              <div className="form-group col-md-3">
+              <div className="col">
                 <select
                   value={this.state.activeItem.category}
                   name="category"
@@ -233,7 +239,10 @@ export default class CustomModal extends Component {
                 ></AddNoteForm>
               ) : null}
               {this.props.notesList.length != 0 ? (
-                <TopicPanel topicList={this.props.notesList}></TopicPanel>
+                <TopicPanel
+                  topicList={this.props.notesList}
+                  descriptionHeader="Notes"
+                ></TopicPanel>
               ) : null}
             </Card.Body>
           </Card>
@@ -246,14 +255,17 @@ export default class CustomModal extends Component {
                 <Button
                   color="success"
                   className="float-right"
-                  onClick={() => onSave(this.state.activeItem)}
+                  onClick={() => this.handleSave(this.state.activeItem)}
                 >
                   Save
                 </Button>
               </Card.Header>
               <Accordion.Collapse eventKey="0">
                 <Card.Body>
-                  <TopicPanel topicList={this.props.historyList}></TopicPanel>
+                  <TopicPanel
+                    topicList={this.props.historyList}
+                    descriptionHeader="Events"
+                  ></TopicPanel>
                 </Card.Body>
               </Accordion.Collapse>
             </Card>

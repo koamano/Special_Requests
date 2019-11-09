@@ -13,6 +13,7 @@
     "react-burger-menu": "^2.6.11",
     "react-dom": "^16.10.2",
     "react-icons": "^3.8.0",
+    "react-popup": "^0.10.0",
     "react-scripts": "3.2.0",
     "react-transition-group": "^4.3.0",
     "reactapp": "^1.0.0",

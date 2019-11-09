@@ -20,11 +20,13 @@ class App extends Component {
       requestList: [],
       viewList: [],
       filterViewList: [],
+      bulkEditItem: [],
       activeItem: {
         name: ""
       },
       noteItem: {},
-      notesList: []
+      notesList: [],
+      printList: []
     };
   }
 
@@ -42,15 +44,22 @@ class App extends Component {
     this.setState({ viewList: this.state.requestList });
   };
 
+  findDiff = (prevItem, currentItem) => {
+    let diff = Object.keys(currentItem).reduce((diff, key) => {
+      if (prevItem[key] === currentItem[key]) return diff;
+      return {
+        ...diff,
+        [key]: currentItem[key]
+      };
+    }, {});
+    return diff;
+  };
+
   toggle = () => {
     this.setState({ modal: !this.state.modal });
   };
 
-  noteToggle = () => {
-    this.setState({ noteModal: !this.state.noteModal });
-  };
-
-  handleSubmit = item => {
+  handleSubmit = (item, diff) => {
     this.toggle();
     if (item.id) {
       axios
@@ -62,12 +71,31 @@ class App extends Component {
         .then(res => this.refreshList());
     }
     this.refreshList();
+
+    this.handleAddHistory(item, diff);
+  };
+
+  handleBulkSubmit = (bulkItems, action) => {
+    bulkItems.map(item => {
+      axios.put(`http://localhost:8000/api/request/${item.id}/`, item);
+      this.handleAddBulkHistory(item, action);
+    });
   };
 
   handleDelete = item => {
     axios
       .delete(`http://localhost:8000/api/todos/${item.id}`)
       .then(res => this.refreshList());
+  };
+
+  handlePrint = items => {
+    const itemNotes = "";
+    items.forEach(item => {
+      axios
+        .get(`http://localhost:8000/api/notes?requestid=${item.id}`)
+        .then(res => (itemNotes = res.data));
+      let printItems = { ...item, itemNotes };
+    });
   };
 
   createItem = () => {
@@ -104,6 +132,20 @@ class App extends Component {
 
   handleAddNote = item => {
     axios.post("http://localhost:8000/api/notes/", item);
+  };
+
+  handleAddHistory = (item, action) => {
+    let actionData = JSON.stringify(action);
+    actionData = actionData.replace(/"/g, "");
+    actionData = actionData.replace("{", " ");
+    actionData = actionData.replace("}", ",");
+    const historyItem = { request: item.id, text: actionData };
+    axios.post("http://localhost:8000/api/history/", historyItem);
+  };
+
+  handleAddBulkHistory = (item, action) => {
+    const historyItem = { request: item.id, text: action };
+    axios.post("http://localhost:8000/api/history/", historyItem);
   };
 
   handleAll = () => {
@@ -150,17 +192,6 @@ class App extends Component {
     );
     this.setState({ filterViewList: viewItems, useFilterView: true });
   };
-
-  // handleFilter = filterItems => {
-  //   let filterViewItems = this.state.viewList;
-  //   for (let key in filterItems) {
-  //     const value = filterItems[key];
-  //     filterViewItems = filterViewItems.filter(
-  //       request => request[key].toUpperCase() == value.toUpperCase()
-  //     );
-  //   }
-  //   this.setState({ filterViewList: filterViewItems, useFilterView: true });
-  // };
 
   handleAllFilter = filterItems => {
     const viewItems = this.state.viewList.filter(
@@ -252,6 +283,8 @@ class App extends Component {
               filterViewList={this.state.filterViewList}
               useFilterView={this.state.useFilterView}
               onEdit={this.handleEditItem}
+              onBulkEditSave={this.handleBulkSubmit}
+              onPrint={this.handlePrint}
             ></Table>
           </div>
 
@@ -262,9 +295,8 @@ class App extends Component {
               notesList={this.state.notesList}
               historyList={this.state.historyList}
               toggle={this.toggle}
-              noteToggle={this.noteToggle}
-              noteModal={this.state.noteModal}
               onSaveNote={this.handleAddNote}
+              findDiff={this.findDiff}
               onSave={this.handleSubmit}
             ></CustomModal>
           ) : null}
