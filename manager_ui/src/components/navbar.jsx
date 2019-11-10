@@ -5,12 +5,9 @@ export default class NavBar extends Component {
     super(props);
   }
   render() {
-    const { toggle, createItem, modal } = this.props;
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <a className="navbar-brand" onClick={createItem}>
-          Add New
-        </a>
+        <a className="navbar-brand">Home</a>
         <button
           className="navbar-toggler"
           type="button"
@@ -27,37 +24,17 @@ export default class NavBar extends Component {
           <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
             <li className="nav-item">
               <a className="nav-link">
-                All{/* All<span className="sr-only">(current)</span> */}
+                Requests{/* All<span className="sr-only">(current)</span> */}
               </a>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="#">
-                Open
+                Inventory
               </a>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="#">
-                Ordered
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                On Hold
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                Closed
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                BO
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                Rejected
+                Logout
               </a>
             </li>
           </ul>

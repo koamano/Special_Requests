@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Route } from "react-router-dom";
 import Navbar from "./components/navbar";
 import Table from "./components/table";
 
@@ -8,6 +9,7 @@ import axios from "axios";
 import CustomModal from "./components/modal";
 import Sidebar from "./components/sidebar";
 import { elastic as Menu } from "react-burger-menu";
+import PrintView from "./components/printView";
 
 class App extends Component {
   constructor(props) {
@@ -26,7 +28,9 @@ class App extends Component {
       },
       noteItem: {},
       notesList: [],
-      printList: []
+      printList: [],
+      showPrintView: false,
+      selectedPrintlist: []
     };
   }
 
@@ -89,13 +93,23 @@ class App extends Component {
   };
 
   handlePrint = items => {
-    const itemNotes = "";
+    let itemNotes = "";
+    let itemDataList = [];
     items.forEach(item => {
       axios
         .get(`http://localhost:8000/api/notes?requestid=${item.id}`)
         .then(res => (itemNotes = res.data));
-      let printItems = { ...item, itemNotes };
+      const itemData = { ...item, ...itemNotes };
+      itemDataList = [...itemDataList, itemData];
     });
+    this.setState({
+      showPrintView: !this.state.showPrintView,
+      selectedPrintlist: itemDataList
+    });
+  };
+
+  handleExitPrint = () => {
+    this.setState({ showPrintView: !this.state.showPrintView });
   };
 
   createItem = () => {
@@ -202,105 +216,119 @@ class App extends Component {
   };
 
   render() {
-    const printList = this.state.requestList.map(request => (
-      <li>{request.store}</li>
-    ));
-    return (
-      <div id="outer-container">
-        <div id="wrapper">
-          <Sidebar
-            onStoreFilter={this.handleStoreFilter}
-            onTypeFilter={this.handleTypeFilter}
-            onCategoryFilter={this.handleCategoryFilter}
-            onAllFilter={this.handleAllFilter}
-            filterValue={this.filterValue}
-            pageWrapId={"page-wrap"}
-            outerContainerId="outer-container"
-          ></Sidebar>
+    let content;
+    if (this.state.showPrintView) {
+      content = (
+        <PrintView
+          activeItems={this.state.selectedPrintlist}
+          handleExitPrint={() => this.handleExitPrint}
+        ></PrintView>
+      );
+    } else {
+      content = (
+        <div id="outer-container">
+          <div id="wrapper">
+            <Sidebar
+              onStoreFilter={this.handleStoreFilter}
+              onTypeFilter={this.handleTypeFilter}
+              onCategoryFilter={this.handleCategoryFilter}
+              onAllFilter={this.handleAllFilter}
+              filterValue={this.filterValue}
+              pageWrapId={"page-wrap"}
+              outerContainerId="outer-container"
+            ></Sidebar>
 
-          <div id="page-wrap">
-            <div class="p-3 mb-2 bg-primary text-white">
-              <div className="container">
-                <button
-                  type="button"
-                  className="btn btn-secondary btn-space-large"
-                  onClick={this.createItem}
-                >
-                  Add New
-                </button>
-                <button
-                  className="btn btn-outline-dark btn-space"
-                  onClick={() => this.handleStatus("all")}
-                >
-                  All
-                </button>
-                <button
-                  className="btn btn-outline-dark btn-space"
-                  onClick={() => this.handleStatus("open")}
-                >
-                  Open
-                </button>
-                <button
-                  className="btn btn-outline-dark btn-space"
-                  onClick={() => this.handleStatus("ordered")}
-                >
-                  Ordered
-                </button>
-                <button
-                  className="btn btn-outline-dark btn-space"
-                  onClick={() => this.handleStatus("received")}
-                >
-                  Received
-                </button>
-                <button
-                  className="btn btn-outline-dark btn-space"
-                  onClick={() => this.handleStatus("done")}
-                >
-                  DONE
-                </button>
-                <button
-                  className="btn btn-outline-dark btn-space"
-                  onClick={() => this.handleStatus("rejected")}
-                >
-                  Rejected
-                </button>
-                <button
-                  className="btn btn-outline-dark btn-space"
-                  onClick={() => this.handleStatus("BO")}
-                >
-                  BO
-                </button>
-                <button
-                  className="btn btn-outline-dark btn-space"
-                  onClick={() => this.handleStatus("archived")}
-                >
-                  Archived
-                </button>
+            <div id="page-wrap">
+              <div class="p-3 mb-2 bg-primary text-white">
+                <div className="container">
+                  <button
+                    type="button"
+                    className="btn btn-secondary btn-space-large"
+                    onClick={this.createItem}
+                  >
+                    Add New
+                  </button>
+                  <button
+                    className="btn btn-outline-dark btn-space"
+                    onClick={() => this.handleStatus("all")}
+                  >
+                    All
+                  </button>
+                  <button
+                    className="btn btn-outline-dark btn-space"
+                    onClick={() => this.handleStatus("open")}
+                  >
+                    Open
+                  </button>
+                  <button
+                    className="btn btn-outline-dark btn-space"
+                    onClick={() => this.handleStatus("ordered")}
+                  >
+                    Ordered
+                  </button>
+                  <button
+                    className="btn btn-outline-dark btn-space"
+                    onClick={() => this.handleStatus("received")}
+                  >
+                    Received
+                  </button>
+                  <button
+                    className="btn btn-outline-dark btn-space"
+                    onClick={() => this.handleStatus("done")}
+                  >
+                    DONE
+                  </button>
+                  <button
+                    className="btn btn-outline-dark btn-space"
+                    onClick={() => this.handleStatus("rejected")}
+                  >
+                    Rejected
+                  </button>
+                  <button
+                    className="btn btn-outline-dark btn-space"
+                    onClick={() => this.handleStatus("BO")}
+                  >
+                    BO
+                  </button>
+                  <button
+                    className="btn btn-outline-dark btn-space"
+                    onClick={() => this.handleStatus("archived")}
+                  >
+                    Archived
+                  </button>
+                </div>
               </div>
+              <Table
+                viewList={this.state.viewList}
+                filterViewList={this.state.filterViewList}
+                useFilterView={this.state.useFilterView}
+                onEdit={this.handleEditItem}
+                onBulkEditSave={this.handleBulkSubmit}
+                onPrint={this.handlePrint}
+              ></Table>
             </div>
-            <Table
-              viewList={this.state.viewList}
-              filterViewList={this.state.filterViewList}
-              useFilterView={this.state.useFilterView}
-              onEdit={this.handleEditItem}
-              onBulkEditSave={this.handleBulkSubmit}
-              onPrint={this.handlePrint}
-            ></Table>
-          </div>
 
-          {this.state.modal ? (
-            <CustomModal
-              activeItem={this.state.activeItem}
-              noteItem={this.state.noteItem}
-              notesList={this.state.notesList}
-              historyList={this.state.historyList}
-              toggle={this.toggle}
-              onSaveNote={this.handleAddNote}
-              findDiff={this.findDiff}
-              onSave={this.handleSubmit}
-            ></CustomModal>
-          ) : null}
+            {this.state.modal ? (
+              <CustomModal
+                activeItem={this.state.activeItem}
+                noteItem={this.state.noteItem}
+                notesList={this.state.notesList}
+                historyList={this.state.historyList}
+                toggle={this.toggle}
+                onSaveNote={this.handleAddNote}
+                findDiff={this.findDiff}
+                onSave={this.handleSubmit}
+              ></CustomModal>
+            ) : null}
+          </div>
         </div>
+      );
+    }
+    return (
+      <div>
+        <Navbar />
+        <div className="content"></div>
+        {content}
       </div>
     );
   }

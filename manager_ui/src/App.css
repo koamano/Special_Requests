@@ -101,6 +101,12 @@
   margin-left: 10px;
   margin-right: 10px;
 }
+
+@media print {
+  .no-print {
+    display: none;
+  }
+}
 /* .bm-overlay {
   background: rgba(0, 0, 0, 0.3);
 } */
